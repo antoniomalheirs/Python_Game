@@ -61,12 +61,12 @@ testY = 10
 # Game Over
 gameoverfonte = pygame.font.Font('freesansbold.ttf', 64)
 
-def show_score(x, y):
+def mostrapontuacao(x, y):
     pontu = fonte.render("Pontuação : " + str(pontuvalor), True, (255, 255, 255))
     tela.blit(pontu, (x, y))
 
 
-def game_over_text():
+def gameovertexto():
     gameovertext = gameoverfonte.render("Você falhou", True, (255, 255, 255))
     tela.blit(gameovertext, (200, 250))
 
@@ -75,5 +75,14 @@ def player(x, y):
     tela.blit(playerImg, (x, y))
 
 
-def enemy(x, y, i):
+def inimigo(x, y, i):
     tela.blit(enemyImg[i], (x, y))
+
+
+# Execução do Game
+executando = True
+while executando:
+    # RGB = Red, Green, Blue
+    tela.fill((0, 0, 0))
+    # Imagem de Fundo
+    tela.blit(fundotela, (0, 0))
