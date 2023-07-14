@@ -4,8 +4,8 @@ import random
 import pygame
 from pygame import mixer
 
-# Intialize the pygame
+#Iniciando Pygame
 pygame.init()
 
-# create the screen
+#Criando tela do jogo
 screen = pygame.display.set_mode((800, 600))
