@@ -122,3 +122,27 @@ while executando:
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 playerX_alt = 0
+
+        playerX += playerX_alt
+        if playerX <= 0:
+            playerX = 0
+        elif playerX >= 736:
+            playerX = 736
+
+        # Enemy Movement
+        for i in range(num_de_inimigos):
+
+            # Game Over
+            if enemyY[i] > 440:
+                for j in range(num_de_inimigos):
+                    enemyY[j] = 2000
+                gameovertexto()
+                break
+
+            enemyX[i] += enemyX_alt[i]
+            if enemyX[i] <= 0:
+                enemyX_alt[i] = 4
+                enemyY[i] += enemyY_alt[i]
+            elif enemyX[i] >= 736:
+                enemyX_alt[i] = -4
+                enemyY[i] += enemyY_alt[i]
