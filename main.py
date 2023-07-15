@@ -17,6 +17,7 @@ pygame.display.set_icon(icone)
 
 # Som
 mixer.music.load("background.wav")
+mixer.music.set_volume(0.050)
 mixer.music.play(-1)
 
 # Fundo
@@ -61,6 +62,11 @@ testY = 10
 # Game Over
 gameoverfonte = pygame.font.Font('freesansbold.ttf', 64)
 
+# Variáveis de controle de tempo
+clock = pygame.time.Clock()
+FPS = 60  # Limite de quadros por segundo
+
+
 def mostrapontuacao(x, y):
     pontu = fonte.render("Pontuação : " + str(pontuvalor), True, (255, 255, 255))
     tela.blit(pontu, (x, y))
@@ -80,8 +86,8 @@ def inimigo(x, y, i):
 
 
 def balas(x, y):
-    global bullet_estado1
-    bullet_estado1 = "fogo"
+    global bullet_estado
+    bullet_estado = "fogo"
     tela.blit(bulletImg, (x + 16, y + 10))
 
 
@@ -96,6 +102,7 @@ def colissao(enemyX, enemyY, bulletX, bulletY):
 # Execução do Game
 executando = True
 while executando:
+    clock.tick(FPS)
     # RGB = Red, Green, Blue
     tela.fill((0, 0, 0))
     # Imagem de Fundo
@@ -104,6 +111,7 @@ while executando:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            executando = False
 
         # if keystroke is pressed check whether its right or left
         if event.type == pygame.KEYDOWN:
@@ -114,6 +122,7 @@ while executando:
             if event.key == pygame.K_SPACE:
                 if bullet_estado is "pronto":
                     bulletSound = mixer.Sound("laser.wav")
+                    bulletSound.set_volume(0.070)
                     bulletSound.play()
                     # Get the current x cordinate of the spaceship
                     bulletX = playerX
@@ -123,47 +132,52 @@ while executando:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 playerX_alt = 0
 
-        playerX += playerX_alt
-        if playerX <= 0:
-            playerX = 0
-        elif playerX >= 736:
-            playerX = 736
+    playerX += playerX_alt
+    if playerX <= 0:
+        playerX = 0
+    elif playerX >= 736:
+        playerX = 736
 
-        # Enemy Movement
-        for i in range(num_de_inimigos):
+    # Enemy Movement
+    for i in range(num_de_inimigos):
 
-            # Game Over
-            if enemyY[i] > 440:
-                for j in range(num_de_inimigos):
-                    enemyY[j] = 2000
-                gameovertexto()
-                break
+        # Game Over
+        if enemyY[i] > 440:
+            for j in range(num_de_inimigos):
+                enemyY[j] = 2000
+            gameovertexto()
+            break
 
-            enemyX[i] += enemyX_alt[i]
-            if enemyX[i] <= 0:
-                enemyX_alt[i] = 4
-                enemyY[i] += enemyY_alt[i]
-            elif enemyX[i] >= 736:
-                enemyX_alt[i] = -4
-                enemyY[i] += enemyY_alt[i]
-                # Collision
-                collision = colissao(enemyX[i], enemyY[i], bulletX, bulletY)
-                if collision:
-                    explosionSound = mixer.Sound("explosion.wav")
-                    explosionSound.play()
-                    bulletY = 480
-                    bullet_estado = "pronto"
-                    pontuvalor += 1
-                    enemyX[i] = random.randint(0, 736)
-                    enemyY[i] = random.randint(50, 150)
+        enemyX[i] += enemyX_alt[i]
+        if enemyX[i] <= 0:
+            enemyX_alt[i] = 4
+            enemyY[i] += enemyY_alt[i]
+        elif enemyX[i] >= 736:
+            enemyX_alt[i] = -4
+            enemyY[i] += enemyY_alt[i]
+        # Collision
+        collision = colissao(enemyX[i], enemyY[i], bulletX, bulletY)
+        if collision:
+            explosionSound = mixer.Sound("explosion.wav")
+            explosionSound.set_volume(0.060)
+            explosionSound.play()
+            bulletY = 480
+            bullet_estado = "pronto"
+            pontuvalor += 1
+            enemyX[i] = random.randint(0, 736)
+            enemyY[i] = random.randint(50, 150)
 
-                inimigo(enemyX[i], enemyY[i], i)
+        inimigo(enemyX[i], enemyY[i], i)
 
-            # Bullet Movement
-            if bulletY <= 0:
-                bulletY = 480
-                bullet_estado = "pronto"
+    # Bullet Movement
+    if bulletY <= 0:
+        bulletY = 480
+        bullet_estado = "pronto"
 
-            if bullet_estado1 is "fogo":
-                balas(bulletX, bulletY)
-                bulletY -= bulletY_alt
+    if bullet_estado is "fogo":
+        balas(bulletX, bulletY)
+        bulletY -= bulletY_alt
+
+    player(playerX, playerY)
+    mostrapontuacao(textX, testY)
+    pygame.display.update()
