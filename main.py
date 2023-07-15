@@ -79,6 +79,20 @@ def inimigo(x, y, i):
     tela.blit(enemyImg[i], (x, y))
 
 
+def balas(x, y):
+    global bullet_estado1
+    bullet_estado1 = "fogo"
+    tela.blit(bulletImg, (x + 16, y + 10))
+
+
+def colissao(enemyX, enemyY, bulletX, bulletY):
+    distancia = math.sqrt(math.pow(enemyX - bulletX, 2) + (math.pow(enemyY - bulletY, 2)))
+    if distancia < 27:
+        return True
+    else:
+        return False
+
+
 # Execução do Game
 executando = True
 while executando:
@@ -86,3 +100,25 @@ while executando:
     tela.fill((0, 0, 0))
     # Imagem de Fundo
     tela.blit(fundotela, (0, 0))
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+        # if keystroke is pressed check whether its right or left
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                playerX_alt = -5
+            if event.key == pygame.K_RIGHT:
+                playerX_alt = 5
+            if event.key == pygame.K_SPACE:
+                if bullet_estado is "pronto":
+                    bulletSound = mixer.Sound("laser.wav")
+                    bulletSound.play()
+                    # Get the current x cordinate of the spaceship
+                    bulletX = playerX
+                    balas(bulletX, bulletY)
+
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                playerX_alt = 0
