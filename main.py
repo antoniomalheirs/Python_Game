@@ -35,7 +35,7 @@ enemyX = []
 enemyY = []
 enemyX_alt = []
 enemyY_alt = []
-num_de_inimigos = 10
+num_de_inimigos = 5
 
 for i in range(num_de_inimigos):
     enemyImg.append(pygame.image.load('enemy.png'))
@@ -78,17 +78,20 @@ def gameovertexto():
 
 
 def player(x, y):
-    tela.blit(playerImg, (x, y))
+    imagem_redimensionada = pygame.transform.scale(playerImg, (25,25))
+    tela.blit(imagem_redimensionada, (x, y))
 
 
 def inimigo(x, y, i):
-    tela.blit(enemyImg[i], (x, y))
+    imagem_redimensionada = pygame.transform.scale(enemyImg[i], (25, 25))
+    tela.blit(imagem_redimensionada, (x, y))
 
 
 def balas(x, y):
     global bullet_estado
     bullet_estado = "fogo"
-    tela.blit(bulletImg, (x + 16, y + 10))
+    imagem_redimensionada = pygame.transform.scale(bulletImg, (25, 25))
+    tela.blit(imagem_redimensionada, (x , y))
 
 
 def colissao(enemyX, enemyY, bulletX, bulletY):
