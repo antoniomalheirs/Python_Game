@@ -12,7 +12,7 @@ tela = pygame.display.set_mode((800, 600))
 
 # Descrição e Ícone
 pygame.display.set_caption("Space Invaders python version")
-icone = pygame.image.load('ufo.png')
+icone = pygame.image.load('logo.png')
 pygame.display.set_icon(icone)
 
 # Som
