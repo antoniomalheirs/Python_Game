@@ -102,6 +102,7 @@ def colissao(enemyX, enemyY, bulletX, bulletY):
 # Execução do Game
 executando = True
 while executando:
+
     clock.tick(FPS)
     # RGB = Red, Green, Blue
     tela.fill((0, 0, 0))
