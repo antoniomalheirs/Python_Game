@@ -146,3 +146,24 @@ while executando:
             elif enemyX[i] >= 736:
                 enemyX_alt[i] = -4
                 enemyY[i] += enemyY_alt[i]
+                # Collision
+                collision = colissao(enemyX[i], enemyY[i], bulletX, bulletY)
+                if collision:
+                    explosionSound = mixer.Sound("explosion.wav")
+                    explosionSound.play()
+                    bulletY = 480
+                    bullet_estado = "pronto"
+                    pontuvalor += 1
+                    enemyX[i] = random.randint(0, 736)
+                    enemyY[i] = random.randint(50, 150)
+
+                inimigo(enemyX[i], enemyY[i], i)
+
+            # Bullet Movement
+            if bulletY <= 0:
+                bulletY = 480
+                bullet_estado = "pronto"
+
+            if bullet_estado1 is "fogo":
+                balas(bulletX, bulletY)
+                bulletY -= bulletY_alt
